@@ -1,0 +1,38 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+*.sw?
+
+# Maven
+backend/target/
+target/
+
+# IDEs
+.settings/
+.project
+.classpath
+.factorypath
+backend/.settings/
+backend/.project
+backend/.classpath
+backend/.factorypath
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+
+
+# Project subfolders
+backend/
