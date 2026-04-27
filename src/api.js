@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // In Vercel, set VITE_API_URL = https://campus-connect-backend.up.railway.app/api
 // Locally it falls back to localhost
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://campus-connect-backend-production-2572.up.railway.app/api';
 
 const api = axios.create({
     baseURL: BASE_URL,
