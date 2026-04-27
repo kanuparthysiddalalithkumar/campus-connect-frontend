@@ -12,6 +12,7 @@ import ActivityDetails from './ActivityDetails';
 import MyActivities from './MyActivities';
 import AdminPanel from './AdminPanel';
 import Profile from './Profile';
+import Chatbot from './Chatbot';
 
 export default function App() {
   return (
@@ -51,6 +52,8 @@ export default function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        {/* Global AI Chatbot – visible on all pages */}
+        <Chatbot />
       </BrowserRouter>
     </AuthProvider>
   );

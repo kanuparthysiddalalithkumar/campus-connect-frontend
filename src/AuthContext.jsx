@@ -40,25 +40,27 @@ export function AuthProvider({ children }) {
     };
 
     const login = async (email, password) => {
-        const res = await api.post('/auth/login', { email, password });
-        const data = res.data; // { token, user }
-        if (data.user && data.user.role) data.user.role = data.user.role.toLowerCase();
-        setUser(data.user);
-        localStorage.setItem('cc_user', JSON.stringify(data));
-        fetchNotifications(data.user.id);
-        fetchRegistrations(data.user.id);
-        return data.user;
+        const res = await api.post('/auth/login', { email: email.trim(), password });
+        const data = res.data; // { token, user } or flattened
+        const userObj = data.user || data;
+        if (userObj.role) userObj.role = userObj.role.toLowerCase();
+        setUser(userObj);
+        localStorage.setItem('cc_user', JSON.stringify({ token: data.token, user: userObj }));
+        fetchNotifications(userObj.id);
+        fetchRegistrations(userObj.id);
+        return userObj;
     };
 
     const register = async (name, email, password, department, year) => {
         const res = await api.post('/auth/register', { name, email, password, department, year });
         const data = res.data;
-        if (data.user && data.user.role) data.user.role = data.user.role.toLowerCase();
-        setUser(data.user);
-        localStorage.setItem('cc_user', JSON.stringify(data));
+        const userObj = data.user || data;
+        if (userObj.role) userObj.role = userObj.role.toLowerCase();
+        setUser(userObj);
+        localStorage.setItem('cc_user', JSON.stringify({ token: data.token, user: userObj }));
         setNotifications([]);
         setRegistrations([]);
-        return data.user;
+        return userObj;
     };
 
     const logout = () => {

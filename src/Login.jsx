@@ -112,7 +112,7 @@ export default function Login() {
                             <input 
                                 className="input"
                                 type="email" 
-                                placeholder={role === 'admin' ? "admin@campus.edu" : "student@campus.edu"}
+                                placeholder={role === 'admin' ? "admin@campus.com" : "student@campus.edu"}
                                 value={form.email} 
                                 onChange={e => s('email')(e.target.value)}
                                 style={{ paddingLeft: 46, background: 'rgba(255,255,255,0.7)' }}

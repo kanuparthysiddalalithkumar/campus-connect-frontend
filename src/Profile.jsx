@@ -6,10 +6,9 @@ import Spinner from './Spinner';
 import { User, Mail, BookOpen, Calendar, Award, Edit2, Save, GraduationCap, Settings, X } from 'lucide-react';
 
 export default function Profile() {
-    const { user } = useAuth();
+    const { user, registrations } = useAuth();
     const [editing, setEditing] = useState(false);
     const [name, setName] = useState(user?.name || '');
-    const { registrations } = useAuth();
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(true);
 

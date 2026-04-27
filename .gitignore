@@ -34,5 +34,10 @@ backend/.factorypath
 !.vscode/settings.json
 
 
+# Environment variables (API keys)
+.env
+.env.local
+.env.*.local
+
 # Project subfolders
 backend/

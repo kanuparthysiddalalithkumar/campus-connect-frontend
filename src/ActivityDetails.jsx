@@ -42,7 +42,7 @@ export default function ActivityDetails() {
         </div>
     );
 
-    const registered = isRegistered(id);
+    const registered = isRegistered(parseInt(id));
     const fillPct = Math.min(100, Math.round((a.currentParticipants / a.maxParticipants) * 100));
     const catEmoji = a.category === 'Club' ? '🎭' : a.category === 'Sport' ? '🏆' : '⚡';
 
@@ -50,7 +50,7 @@ export default function ActivityDetails() {
         if (!user) { navigate('/login'); return; }
         if (user.role === 'admin') { toast.error('Admins cannot register for activities'); return; }
         if (registered) { toast('Already registered!', { icon: '✅' }); return; }
-        const success = await registerForActivity(id);
+        const success = await registerForActivity(parseInt(id));
         if (success) {
             toast.success(`Registered for "${a.title}"!`);
             // Refresh activity data to show updated participant count

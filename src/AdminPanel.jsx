@@ -78,11 +78,17 @@ export default function AdminPanel() {
         }
     };
 
-    const sendNotif = () => {
+    const sendNotif = async () => {
         if (!notifMsg.trim()) { toast.error('Enter a message'); return; }
-        // We lack a broadcast endpoint, simulating for now or implement in backend.
-        toast.success(`Notification sent to ${students} students!`);
-        setNotifMsg(''); setModal(null);
+        try {
+            await api.post('/notifications/broadcast', { message: notifMsg, type: 'info' });
+            toast.success(`Notification sent to ${students} students!`);
+            setNotifMsg('');
+            setModal(null);
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to send notification');
+        }
     };
 
     const students = allUsers.filter(u => u.role === 'STUDENT' || u.role === 'student').length;
