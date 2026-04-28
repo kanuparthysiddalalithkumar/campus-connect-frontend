@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
 const api = axios.create({
     baseURL: BASE_URL,
-    timeout: 15000,  // 15 second timeout — Railway cold starts can be slow
+    timeout: 60000,  // 60 seconds — handles Railway cold starts (can take 30-50s)
     headers: {
         'Content-Type': 'application/json',
     },
@@ -28,16 +28,35 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// Global error handler — logs network errors clearly
+// Global response interceptor — auto-retry once on timeout/network error
 api.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
+        const config = error.config;
+
+        // Retry once on timeout or network error (not on 4xx/5xx)
+        if (!error.response && !config._retried) {
+            config._retried = true;
+            console.warn('[API] Request timed out or network error — retrying once...');
+            // Wait 2 seconds before retry
+            await new Promise(r => setTimeout(r, 2000));
+            return api(config);
+        }
+
         if (!error.response) {
-            // Network error — backend is down or CORS preflight failed
-            console.error('[API] Network error — backend unreachable:', error.message);
+            console.error('[API] Backend unreachable after retry:', error.message);
         }
         return Promise.reject(error);
     }
 );
+
+// Warm up the backend on app load to avoid cold start timeout during login/register
+export const warmUpBackend = async () => {
+    try {
+        await axios.get(`${BASE_URL}/health`, { timeout: 60000 });
+    } catch (e) {
+        // Ignore — warmup is best-effort
+    }
+};
 
 export default api;
